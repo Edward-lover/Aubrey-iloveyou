@@ -1,0 +1,472 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        "Comic Sans MS",
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
+
+    color: #694c60;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            #ffd5e5,
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            #dce5ff,
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 50% 90%,
+            #fff0bd,
+            transparent 30%
+        ),
+        #fff5fa;
+
+    overflow: hidden;
+}
+
+
+/* Main */
+
+main {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Cute face */
+
+.cute {
+    font-size: 48px;
+
+    margin-bottom: 10px;
+
+    animation: bounce 2s infinite;
+}
+
+
+/* Title */
+
+h1 {
+    margin: 0 0 10px;
+
+    color: #e65789;
+
+    font-size: clamp(
+        2rem,
+        8vw,
+        4rem
+    );
+
+    text-shadow:
+        2px 2px white,
+        4px 4px rgba(230, 87, 137, 0.15);
+}
+
+.subtitle {
+    margin: 0 0 30px;
+
+    font-size: 1.1rem;
+
+    color: #876b7e;
+}
+
+
+/* Card */
+
+.card {
+    width: min(
+        90vw,
+        520px
+    );
+
+    padding: 35px 25px;
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.85
+    );
+
+    border: 3px solid #ffd0df;
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(170, 80, 120, 0.18);
+
+    backdrop-filter: blur(10px);
+}
+
+.card h2 {
+    margin: 0 0 30px;
+
+    color: #d84f82;
+
+    font-size: clamp(
+        1.4rem,
+        5vw,
+        2rem
+    );
+}
+
+
+/* Buttons */
+
+.buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 18px;
+
+    min-height: 60px;
+}
+
+button {
+    border: none;
+
+    font-family: inherit;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* YES */
+
+#yesButton {
+    padding: 15px 28px;
+
+    border-radius: 50px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff76a8,
+            #e84f88
+        );
+
+    font-size: 1rem;
+
+    box-shadow:
+        0 8px 20px
+        rgba(232, 79, 136, 0.3);
+
+    transition: transform 0.2s;
+}
+
+#yesButton:hover {
+    transform: scale(1.1);
+}
+
+
+/* NO */
+
+#noButton {
+    padding: 15px 28px;
+
+    border-radius: 50px;
+
+    background: #e9e9ef;
+
+    color: #777;
+
+    font-size: 1rem;
+
+    transition:
+        left 0.15s,
+        top 0.15s,
+        transform 0.15s;
+}
+
+
+/* Message */
+
+#message {
+    min-height: 25px;
+
+    margin: 18px 0 0;
+
+    color: #df5686;
+
+    font-size: 0.9rem;
+}
+
+.small {
+    margin-top: 25px;
+
+    color: #a08396;
+
+    font-size: 0.85rem;
+}
+
+
+/* Floating decorations */
+
+.floating-hearts {
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+.floating-hearts {
+    font-size: 25px;
+}
+
+.floating-hearts::before {
+    content: "💗     🌸       💕        ✨       💖";
+
+    position: absolute;
+
+    width: 100%;
+
+    top: 10%;
+
+    text-align: center;
+
+    opacity: 0.6;
+
+    animation: float 5s infinite ease-in-out;
+}
+
+
+/* Letter background */
+
+.letter-background {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(70, 30, 55, 0.4);
+
+    backdrop-filter: blur(6px);
+
+    z-index: 100;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity 0.4s,
+        visibility 0.4s;
+}
+
+.letter-background.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* Letter */
+
+.letter {
+    width: min(
+        90vw,
+        550px
+    );
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    position: relative;
+
+    padding: 40px 30px;
+
+    background:
+        #fffafc;
+
+    border:
+        3px solid #ffc4d8;
+
+    border-radius: 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 30px 80px
+        rgba(50, 20, 40, 0.3);
+
+    transform:
+        scale(0.5)
+        rotate(-5deg);
+
+    transition:
+        transform 0.5s;
+}
+
+.letter-background.show .letter {
+    transform:
+        scale(1)
+        rotate(0deg);
+}
+
+.envelope {
+    font-size: 50px;
+}
+
+.letter h2 {
+    color: #dc5685;
+
+    font-size: 1.8rem;
+
+    margin: 10px 0 25px;
+}
+
+
+/* Letter text */
+
+.letter-text {
+    text-align: left;
+
+    font-family: Georgia, serif;
+
+    line-height: 1.8;
+
+    font-size: 1.05rem;
+}
+
+.letter-text strong {
+    color: #e34e82;
+}
+
+.signature {
+    text-align: right;
+
+    color: #d95786;
+
+    font-style: italic;
+}
+
+.bottom-hearts {
+    margin-top: 20px;
+
+    font-size: 22px;
+}
+
+
+/* Close */
+
+.close {
+    position: absolute;
+
+    right: 12px;
+
+    top: 12px;
+
+    width: 35px;
+
+    height: 35px;
+
+    border-radius: 50%;
+
+    background: #ffe0eb;
+
+    color: #d95786;
+
+    font-size: 25px;
+
+    line-height: 30px;
+}
+
+
+/* Animations */
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+
+/* Phone */
+
+@media (max-width: 600px) {
+
+    .card {
+        padding: 30px 18px;
+    }
+
+    #yesButton,
+    #noButton {
+        padding: 13px 22px;
+    }
+
+    .letter {
+        padding: 35px 22px;
+    }
+
+    .letter-text {
+        font-size: 1rem;
+    }
+}
