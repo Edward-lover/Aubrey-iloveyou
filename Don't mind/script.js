@@ -1,226 +1,291 @@
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
+const yesButton =
+    document.getElementById("yesButton");
 
-const letterOverlay = document.getElementById("letterOverlay");
-const closeBtn = document.getElementById("closeBtn");
+const noButton =
+    document.getElementById("noButton");
 
-const tease = document.getElementById("tease");
+const message =
+    document.getElementById("message");
 
+const letter =
+    document.getElementById("letter");
 
-// -----------------------------
-// YES BUTTON
-// -----------------------------
-
-yesBtn.addEventListener("click", () => {
-
-  letterOverlay.classList.add("show");
-
-  createHearts();
-
-});
+const closeButton =
+    document.getElementById("closeButton");
 
 
-// -----------------------------
-// CLOSE LETTER
-// -----------------------------
+/*
+    YES BUTTON
+*/
 
-closeBtn.addEventListener("click", () => {
+yesButton.addEventListener("click", function () {
 
-  letterOverlay.classList.remove("show");
+    letter.classList.add("show");
+
+    createHeartExplosion();
 
 });
 
 
-// Also close when clicking outside letter
+/*
+    CLOSE LETTER
+*/
 
-letterOverlay.addEventListener("click", (event) => {
+closeButton.addEventListener("click", function () {
 
-  if (event.target === letterOverlay) {
-    letterOverlay.classList.remove("show");
-  }
+    letter.classList.remove("show");
 
 });
 
 
-// -----------------------------
-// NO BUTTON
-// -----------------------------
+/*
+    Click outside the letter
+*/
 
-const teasingMessages = [
-  "Hmm... are you sure? 👀",
-  "Nice try! 😂",
-  "Nope! You can't catch me!",
-  "Hehehe, try again 😈",
-  "Wrong button! 👉👈",
-  "You really thought I'd let you? 😂",
-  "The NO button has escaped!",
-  "Try pressing YES instead 💕"
+letter.addEventListener("click", function (event) {
+
+    if (event.target === letter) {
+
+        letter.classList.remove("show");
+
+    }
+
+});
+
+
+/*
+    Messages when NO escapes
+*/
+
+const messages = [
+    "Are you sure? 👀",
+    "Hehehe, nice try! 😂",
+    "You can't catch me! 🏃",
+    "Try YES instead 💕",
+    "Nope nope nope! 😭",
+    "The button is running away!",
+    "Why are you chasing me?! 😂",
+    "YES is looking pretty nice... 👀"
 ];
 
 
+/*
+    Move the NO button
+*/
+
 function moveNoButton() {
 
-  const buttonWidth = noBtn.offsetWidth;
-  const buttonHeight = noBtn.offsetHeight;
+    const width =
+        noButton.offsetWidth;
 
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
+    const height =
+        noButton.offsetHeight;
 
-  // Keep the button safely inside the screen
+    const padding = 15;
 
-  const padding = 15;
+    const maxX =
+        window.innerWidth -
+        width -
+        padding;
 
-  const maxX = screenWidth - buttonWidth - padding;
-  const maxY = screenHeight - buttonHeight - padding;
+    const maxY =
+        window.innerHeight -
+        height -
+        padding;
 
-  const randomX =
-    Math.floor(Math.random() * Math.max(maxX, padding));
+    const x =
+        Math.random() *
+        Math.max(maxX, padding);
 
-  const randomY =
-    Math.floor(Math.random() * Math.max(maxY, padding));
+    const y =
+        Math.random() *
+        Math.max(maxY, padding);
 
-  // Switch to fixed positioning
 
-  noBtn.style.position = "fixed";
+    noButton.style.position = "fixed";
 
-  noBtn.style.left = `${randomX}px`;
-  noBtn.style.top = `${randomY}px`;
+    noButton.style.left = `${x}px`;
 
-  noBtn.style.zIndex = "50";
+    noButton.style.top = `${y}px`;
 
-  // Random teasing message
+    noButton.style.zIndex = "200";
 
-  const randomMessage =
-    teasingMessages[
-      Math.floor(Math.random() * teasingMessages.length)
-    ];
 
-  tease.textContent = randomMessage;
+    const randomMessage =
+        messages[
+            Math.floor(
+                Math.random() *
+                messages.length
+            )
+        ];
+
+    message.textContent =
+        randomMessage;
 }
 
 
-// -----------------------------
-// PC: dodge when mouse gets close
-// -----------------------------
+/*
+    PC
 
-document.addEventListener("mousemove", (event) => {
+    If the mouse gets close,
+    the button escapes.
+*/
 
-  if (window.innerWidth <= 600) {
-    return;
-  }
+document.addEventListener(
+    "mousemove",
+    function (event) {
 
-  const rect = noBtn.getBoundingClientRect();
+        if (window.innerWidth <= 600) {
+            return;
+        }
 
-  const buttonCenterX =
-    rect.left + rect.width / 2;
+        const rect =
+            noButton.getBoundingClientRect();
 
-  const buttonCenterY =
-    rect.top + rect.height / 2;
+        const centerX =
+            rect.left +
+            rect.width / 2;
 
-  const distanceX =
-    event.clientX - buttonCenterX;
+        const centerY =
+            rect.top +
+            rect.height / 2;
 
-  const distanceY =
-    event.clientY - buttonCenterY;
+        const distanceX =
+            event.clientX -
+            centerX;
 
-  const distance =
-    Math.sqrt(
-      distanceX * distanceX +
-      distanceY * distanceY
-    );
+        const distanceY =
+            event.clientY -
+            centerY;
 
-
-  // If cursor gets within 100px...
-
-  if (distance < 100) {
-    moveNoButton();
-  }
-
-});
-
-
-// -----------------------------
-// Mobile: move when touched
-// -----------------------------
-
-noBtn.addEventListener("touchstart", (event) => {
-
-  event.preventDefault();
-
-  moveNoButton();
-
-});
+        const distance =
+            Math.sqrt(
+                distanceX * distanceX +
+                distanceY * distanceY
+            );
 
 
-// Also move if somehow clicked
+        if (distance < 100) {
 
-noBtn.addEventListener("click", (event) => {
+            moveNoButton();
 
-  event.preventDefault();
+        }
 
-  moveNoButton();
-
-});
-
-
-// -----------------------------
-// Extra floating hearts
-// -----------------------------
-
-function createHearts() {
-
-  const emojis = [
-    "💗",
-    "💖",
-    "💕",
-    "💞",
-    "💘",
-    "🌸"
-  ];
-
-  for (let i = 0; i < 20; i++) {
-
-    const heart = document.createElement("div");
-
-    heart.textContent =
-      emojis[Math.floor(Math.random() * emojis.length)];
-
-    heart.style.position = "fixed";
-
-    heart.style.left =
-      Math.random() * 100 + "vw";
-
-    heart.style.top = "100vh";
-
-    heart.style.fontSize =
-      (15 + Math.random() * 25) + "px";
-
-    heart.style.zIndex = "200";
-
-    heart.style.pointerEvents = "none";
-
-    heart.style.transition =
-      "transform 3s ease, opacity 3s ease";
-
-    document.body.appendChild(heart);
+    }
+);
 
 
-    setTimeout(() => {
+/*
+    PHONE
 
-      heart.style.transform =
-        `translateY(-${window.innerHeight + 200}px) rotate(${Math.random() * 360}deg)`;
+    Touching NO makes it escape.
+*/
 
-      heart.style.opacity = "0";
+noButton.addEventListener(
+    "touchstart",
+    function (event) {
 
-    }, 50);
+        event.preventDefault();
+
+        moveNoButton();
+
+    }
+);
 
 
-    setTimeout(() => {
+/*
+    Backup for clicking NO
+*/
 
-      heart.remove();
+noButton.addEventListener(
+    "click",
+    function (event) {
 
-    }, 3100);
+        event.preventDefault();
 
-  }
+        moveNoButton();
+
+    }
+);
+
+
+/*
+    Heart explosion when YES is pressed
+*/
+
+function createHeartExplosion() {
+
+    const hearts = [
+        "💗",
+        "💖",
+        "💕",
+        "💞",
+        "💘",
+        "🌸"
+    ];
+
+    for (
+        let i = 0;
+        i < 25;
+        i++
+    ) {
+
+        const heart =
+            document.createElement("div");
+
+        heart.textContent =
+            hearts[
+                Math.floor(
+                    Math.random() *
+                    hearts.length
+                )
+            ];
+
+        heart.style.position =
+            "fixed";
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+        heart.style.top =
+            "100vh";
+
+        heart.style.fontSize =
+            15 +
+            Math.random() * 25 +
+            "px";
+
+        heart.style.zIndex =
+            "300";
+
+        heart.style.pointerEvents =
+            "none";
+
+        heart.style.transition =
+            "transform 3s ease, opacity 3s ease";
+
+        document.body.appendChild(
+            heart
+        );
+
+
+        setTimeout(function () {
+
+            heart.style.transform =
+                `translateY(-${window.innerHeight + 200}px) rotate(${Math.random() * 360}deg)`;
+
+            heart.style.opacity =
+                "0";
+
+        }, 50);
+
+
+        setTimeout(function () {
+
+            heart.remove();
+
+        }, 3100);
+
+    }
 
 }
